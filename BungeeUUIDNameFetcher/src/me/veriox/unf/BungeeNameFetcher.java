@@ -9,19 +9,21 @@ import java.nio.charset.Charset;
 public class BungeeNameFetcher {
 	
 	public static String getName(String uuid) {
-		String output = callURL("https://api.mojang.com/user/profiles/" + uuid.replace("-", "") + "/names");
+		uuid = uuid.replace("-", "");
+		
+		String output = callURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
 		
 		StringBuilder result = new StringBuilder();
 		
-		int i = output.length()-1;
+		int i = 0;
 		
-		while(i > -1000) {
+		while(i < 200) {
 			
-			if((String.valueOf(output.charAt(i)).equalsIgnoreCase("e")) && (String.valueOf(output.charAt(i-1)).equalsIgnoreCase("m")) && (String.valueOf(output.charAt(i-2)).equalsIgnoreCase("a")) && (String.valueOf(output.charAt(i-3)).equalsIgnoreCase("n"))) {
+			if((String.valueOf(output.charAt(i)).equalsIgnoreCase("n")) && (String.valueOf(output.charAt(i+1)).equalsIgnoreCase("a")) && (String.valueOf(output.charAt(i+2)).equalsIgnoreCase("m")) && (String.valueOf(output.charAt(i+3)).equalsIgnoreCase("e"))) {
 				
-				int k = i+4;
+				int k = i+7;
 				
-				while(k < 1000) {
+				while(k < 100) {
 					
 					if(!String.valueOf(output.charAt(k)).equalsIgnoreCase("\"")) {
 						
@@ -37,7 +39,7 @@ public class BungeeNameFetcher {
 				break;
 			}
 			
-			i--;
+			i++;
 		}
 		
 		return result.toString();
