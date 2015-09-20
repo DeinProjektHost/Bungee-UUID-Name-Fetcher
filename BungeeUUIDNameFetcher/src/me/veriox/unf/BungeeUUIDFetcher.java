@@ -15,35 +15,35 @@ public class BungeeUUIDFetcher {
 		
 		StringBuilder result = new StringBuilder();
 		
-		for(int i = 7; i < 200; i++) {
-			if(!String.valueOf(output.charAt(i)).equalsIgnoreCase("\"")) {
-				
-				result.append(String.valueOf(output.charAt(i)));
-				
-			} else {
-				break;
-			}
-		}
+		readData(output, result);
 		
 		return result.toString();
 	}
 	
-	public static String getUUID(String name) {
-		String output = callURL("https://api.mojang.com/users/profiles/minecraft/" + name);
+	public static String getUUID(String playername) {
+		String output = callURL("https://api.mojang.com/users/profiles/minecraft/" + playername);
 		
 		StringBuilder result = new StringBuilder();
 		
-		for(int i = 7; i < 200; i++) {
-			if(!String.valueOf(output.charAt(i)).equalsIgnoreCase("\"")) {
+		readData(output, result);
+		
+		return result.toString();
+	}
+	
+	private static void readData(String toRead, StringBuilder result) {
+		int i = 7;
+		
+		while(i < 200) {
+			if(!String.valueOf(toRead.charAt(i)).equalsIgnoreCase("\"")) {
 				
-				result.append(String.valueOf(output.charAt(i)));
+				result.append(String.valueOf(toRead.charAt(i)));
 				
 			} else {
 				break;
 			}
+			
+			i++;
 		}
-		
-		return result.toString();
 	}
 	
 	private static String callURL(String URL) {
