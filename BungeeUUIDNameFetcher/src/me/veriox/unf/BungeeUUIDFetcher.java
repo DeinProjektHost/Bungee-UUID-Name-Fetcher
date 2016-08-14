@@ -5,29 +5,35 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class BungeeUUIDFetcher {
+public class UUIDFetcher {
 	
-	public static String getUUID(ProxiedPlayer player) {
-		String output = callURL("https://api.mojang.com/users/profiles/minecraft/" + player.getName());
-		
-		StringBuilder result = new StringBuilder();
-		
-		readData(output, result);
-		
-		return result.toString();
+	public static UUID getUUID(ProxiedPlayer player) {
+		return getUUID(player.getName());
 	}
 	
-	public static String getUUID(String playername) {
+	public static UUID getUUID(String playername) {
 		String output = callURL("https://api.mojang.com/users/profiles/minecraft/" + playername);
 		
 		StringBuilder result = new StringBuilder();
 		
 		readData(output, result);
 		
-		return result.toString();
+		String u = result.toString();
+		
+		String uuid = "";
+		
+		for(int i = 0; i <= 31; i++) {
+			uuid = uuid + u.charAt(i);
+			if(i == 7 || i == 11 || i == 15 || i == 19) {
+				uuid = uuid + "-";
+			}
+		}
+		
+		return UUID.fromString(uuid);
 	}
 	
 	private static void readData(String toRead, StringBuilder result) {
