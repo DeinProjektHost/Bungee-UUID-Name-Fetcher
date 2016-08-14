@@ -8,6 +8,10 @@ import java.nio.charset.Charset;
 
 public class BungeeNameFetcher {
 	
+	public static String getName(UUID uuid) {
+		return getName(uuid.toString());
+	}
+	
 	public static String getName(String uuid) {
 		uuid = uuid.replace("-", "");
 		
